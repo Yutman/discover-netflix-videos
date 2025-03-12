@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './navbar.module.css';
 
 const NavBar = (props) => {
 
@@ -6,22 +7,36 @@ const NavBar = (props) => {
 
 
   return ( 
-    <div>
-    NavBar
-    <ul>
-        <li>Home</li>
-        <li>My List</li>
+    <div className={styles.container}>
+    <div className={styles.wrapper}>
+        <a className={styles.logoLink}>
+            <div className={styles.logoWrapper}>
+                Netflix
+            </div>
+        </a>
+   
+    <ul className={styles.navItems}>
+        <li className={styles.navItem}>Home</li>
+        <li className={styles.navItem2}>My List</li>
     </ul>
 
-    <nav>
-        <div><button>
-            <p>{username}</p>
+    <nav className={styles.navContainer}>
+        <div>
+            <button className={styles.usernameBtn}>
+            <p className={styles.username}>
+                {username}
+            </p>
+            {/** Expand more icon**/}
             </button>
-            <div><a>
-                Sign Out
-                </a></div>
+            <div className={styles.navDropdown}>
+                <div>
+                <a className={styles.linkName}>Sign Out</a>
+                <div className={styles.lineWrapper}></div>
+                </div>
+            </div>
         </div>
      </nav>
+      </div>
     </div>
   );
 }
