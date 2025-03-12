@@ -12,7 +12,11 @@ export default function Home() {
 
        <h1>Netflix</h1>
 
-       <Banner/>
+       <Banner 
+          title='Shawshank Redemption'
+          subTitle='Drama'
+          imgUrl='/static/images/shawshank_redemption.jpg'   
+       />
 
       {/* <NavBar/>
        <Card/> */}
