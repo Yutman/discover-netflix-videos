@@ -3,6 +3,7 @@ import styles from "@/styles/Home.module.css";
 
 import Banner from "../components/banner/banner";
 import NavBar from "../components/nav/navbar";
+import Card from "../components/card/card";
 
 export default function Home() {
   return (
@@ -13,15 +14,25 @@ export default function Home() {
       </Head>
 
         <NavBar 
-          username='muchiri@a2z.com'/>
+          username='muchiri@a2z.com'
+          />
        <Banner 
           title='Shawshank Redemption'
           subTitle='Drama'
           imgUrl='/static/images/shawshank_redemption.jpg'   
        />
 
-    
-       {/* <Card/> */}
+       <Card 
+          imgUrl='/static/images/shawshank_redemption.jpg'
+          size='large'/>
+
+        <Card 
+          imgUrl='/static/images/shawshank_redemption.jpg'
+          size='medium'/>
+
+        <Card 
+          imgUrl='/static/images/shawshank_redemption.jpg'
+          size='small'/>
 
       </div>
   );
