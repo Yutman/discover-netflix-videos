@@ -3,7 +3,6 @@ import styles from "@/styles/Home.module.css";
 
 import Banner from "../components/banner/banner";
 import NavBar from "../components/nav/navbar";
-import Card from "../components/card/card";
 import SectionCards from "../components/card/section-cards";
 
 export default function Home() {
@@ -24,19 +23,6 @@ export default function Home() {
        />
        
        <SectionCards title='Disney'/>
-
-       <Card 
-          imgUrl='/static/images/shawshank_redemption.jpg'
-          size='large'/>
-
-        <Card 
-          imgUrl='/static/images/shawshank_redemption.jpg'
-          size='medium'/>
-
-        <Card 
-          imgUrl='/static/images/shawshank_redemption.jpg'
-          size='small'/>
-
       </div>
   );
 }
