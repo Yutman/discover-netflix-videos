@@ -21,8 +21,10 @@ export default function Home() {
           subTitle='Drama'
           imgUrl='/static/images/shawshank_redemption.jpg'   
        />
-       
+
+       <div className={styles.sectionWrapper}>
        <SectionCards title='Disney'/>
+       </div>
       </div>
   );
 }
