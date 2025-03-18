@@ -6,6 +6,19 @@ import NavBar from "../components/nav/navbar";
 import SectionCards from "../components/card/section-cards";
 
 export default function Home() {
+
+  const disneyVideos =[
+    {
+      imgUrl: '/static/images/shawshank_redemption.jpg',
+    },
+     {
+      imgUrl: '/static/images/shawshank_redemption.jpg',
+    },
+     {
+      imgUrl: '/static/images/shawshank_redemption.jpg',
+    },
+
+  ]
   return (
   <div className={styles.container}>
       <Head>
@@ -23,7 +36,8 @@ export default function Home() {
        />
 
        <div className={styles.sectionWrapper}>
-       <SectionCards title='Disney'/>
+       <SectionCards title='Disney' videos={disneyVideos} size='large'/>
+       <SectionCards title='Disney' videos={disneyVideos} size='medium'/>
        </div>
       </div>
   );
