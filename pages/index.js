@@ -5,20 +5,11 @@ import Banner from "../components/banner/banner";
 import NavBar from "../components/nav/navbar";
 import SectionCards from "../components/card/section-cards";
 
+import {getVideos} from '../lib/videos';
+
 export default function Home() {
-
-  const disneyVideos =[
-    {
-      imgUrl: '/static/images/shawshank_redemption.jpg',
-    },
-     {
-      imgUrl: '/static/images/shawshank_redemption.jpg',
-    },
-     {
-      imgUrl: '/static/images/shawshank_redemption.jpg',
-    },
-
-  ]
+  const disneyVideos = getVideos();
+ 
   return (
   <div className={styles.container}>
       <Head>
