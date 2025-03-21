@@ -5,7 +5,7 @@ import Banner from "../components/banner/banner";
 import NavBar from "../components/nav/navbar";
 import SectionCards from "../components/card/section-cards";
 
-import {getVideos} from '../lib/videos';
+import {getPopularVideos, getVideos} from '../lib/videos';
 
 export async function getServerSideProps() {
     const disneyVideos = await getVideos
@@ -17,13 +17,17 @@ export async function getServerSideProps() {
      const travelVideos = await getVideos
     ('travel');
 
-    //  const popularVideos = await getVideos
-    // ('disneytrailer');
+     const popularVideos = await getPopularVideos();
 
-    return { props: {disneyVideos, travelVideos, productivityVideos}};
+    return { props: {disneyVideos, travelVideos, productivityVideos, popularVideos}};
 }
 
-export default function Home({disneyVideos, travelVideos, productivityVideos}) {
+export default function Home({
+  disneyVideos, 
+  travelVideos, 
+  productivityVideos,
+  popularVideos
+}) {
 
   return (
   <div className={styles.container}>
@@ -31,6 +35,8 @@ export default function Home({disneyVideos, travelVideos, productivityVideos}) {
         <title>Netflix App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <div className={styles.main}>
 
         <NavBar 
           username='muchiri@a2z.com'
@@ -45,7 +51,8 @@ export default function Home({disneyVideos, travelVideos, productivityVideos}) {
        <SectionCards title='Disney' videos={disneyVideos} size='large'/>
        <SectionCards title='Travel' videos={travelVideos} size='small'/>
         <SectionCards title='Productivity' videos={productivityVideos} size='medium'/>
-         <SectionCards title='Popular' videos={disneyVideos} size='small'/>
+         <SectionCards title='Popular' videos={popularVideos} size='small'/>
+       </div>
        </div>
       </div>
   );
