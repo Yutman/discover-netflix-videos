@@ -24,6 +24,18 @@ const Login = () => {
             </div>
         </a>
         </div>
+        <main className={styles.main}>
+            <h1 className={styles.signinHeader}>Sign In</h1>
+
+            <input 
+                type='text' 
+                placeholder='Email Address'
+                className={styles.emailInput}/>
+                
+            <button onClick={handleLoginWithEmail}>
+                Sign In
+            </button>
+        </main>
       </header>
     </div>
   ); 
