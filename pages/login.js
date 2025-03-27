@@ -1,14 +1,32 @@
 import React from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
+import {useState} from 'react'
 
 import styles from '../styles/Login.module.css'
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [userMsg, setUserMsg] = useState('');
+
+  const handleOnChangeEmail = (e) => {
+    setUserMsg('');
+    console.log('event', e);
+    const email = e.target.value;
+    setEmail(email);
+  };
+
   const handleLoginWithEmail = (e) => {
       console.log('Hi Button Clicked'); 
       e.preventDefault(); 
-  } 
+
+       if (email) {
+      //route to dashboard
+    } else {
+      //show error message
+      setUserMsg('Please enter a valid email address');
+    }
+  };
 
 
   return (
@@ -37,9 +55,12 @@ const Login = () => {
             <input 
                 type='text' 
                 placeholder='Email Address'
-                className={styles.emailInput}/>
+                className={styles.emailInput}
+                onChange={handleOnChangeEmail}
+                />
+
       <p className={styles.userMsg}>
-        Enter a valid email address
+        {userMsg}
       </p>
             <button 
                 onClick={handleLoginWithEmail}
