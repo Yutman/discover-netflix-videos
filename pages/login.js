@@ -5,6 +5,13 @@ import Image from 'next/image'
 import styles from '../styles/Login.module.css'
 
 const Login = () => {
+
+  const handleLoginWithEmail = (e) => {
+      console.log('Hi Button Clicked'); 
+      e.preventDefault(); 
+  } 
+
+
   return (
   <div>
       <Head>
@@ -25,16 +32,21 @@ const Login = () => {
         </a>
         </div>
         <main className={styles.main}>
+          <div className={styles.mainWrapper}>
             <h1 className={styles.signinHeader}>Sign In</h1>
-
             <input 
                 type='text' 
                 placeholder='Email Address'
                 className={styles.emailInput}/>
-                
-            <button onClick={handleLoginWithEmail}>
+      <p className={styles.userMsg}>
+        Enter a valid email address
+      </p>
+            <button 
+                onClick={handleLoginWithEmail}
+                className={styles.loginBtn}>
                 Sign In
             </button>
+            </div>
         </main>
       </header>
     </div>
