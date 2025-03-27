@@ -5,7 +5,6 @@ import Image from 'next/image'
 import styles from '../styles/Login.module.css'
 
 const Login = () => {
-
   const handleLoginWithEmail = (e) => {
       console.log('Hi Button Clicked'); 
       e.preventDefault(); 
@@ -13,12 +12,12 @@ const Login = () => {
 
 
   return (
-  <div>
+  <div className={styles.container}>
       <Head>
         <title>Netflix SignIn</title>
       </Head>
 
-      <header>
+      <header className={styles.header}>
         <div className={styles.headerWrapper}>
          <a className={styles.logoLink}>
             <div className={styles.logoWrapper}>
@@ -31,6 +30,7 @@ const Login = () => {
             </div>
         </a>
         </div>
+        </header>
         <main className={styles.main}>
           <div className={styles.mainWrapper}>
             <h1 className={styles.signinHeader}>Sign In</h1>
@@ -48,9 +48,8 @@ const Login = () => {
             </button>
             </div>
         </main>
-      </header>
     </div>
   ); 
 };
 
-export default Login
+export default Login;
