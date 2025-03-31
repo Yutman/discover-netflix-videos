@@ -21,7 +21,7 @@ const Login = () => {
   };
 
   const handleLoginWithEmail = (e) => {
-      console.log('Hi Button Clicked'); 
+      console.log('Hi Button Cilicked'); 
       e.preventDefault(); 
 
        if (email) {
