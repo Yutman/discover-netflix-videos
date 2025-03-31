@@ -32,11 +32,12 @@ const Login = () => {
             email,
             });
             console.log({didToken});
-            
+            if (didToken) {
+              router.push('/');
+            }
           } catch (error) {
            console.error('Something went wrong logging in', error);
           }
-    //  router.push ('/');
         } else {
       //show error message
       setUserMsg('Something went wrong logging in');
