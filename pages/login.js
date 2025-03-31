@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 
@@ -15,6 +15,23 @@ const Login = () => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    const handleComplete = () => {
+      setIsLoading(false);
+    }
+    router.events.on('routeChangeComplete', 
+      handleComplete );
+    router.events.on('routeChangeError', 
+      handleComplete );
+
+      return () => {
+        router.events.off('routeChangeComplete', 
+      handleComplete);
+       router.events.off('routeChangeError', 
+      handleComplete);
+      };
+  }, [router]);
+
   const handleOnChangeEmail = (e) => {
     setUserMsg('');
     console.log('event', e);
@@ -23,7 +40,7 @@ const Login = () => {
   };
 
   const handleLoginWithEmail = async (e) => {
-      console.log('Hi Button Cilicked'); 
+      console.log('Hi Button Clicked'); 
       e.preventDefault(); 
       
 
@@ -31,13 +48,12 @@ const Login = () => {
         if (email === 'nimimishiri@gmail.com') {
           try {
           setIsLoading(true);
-          
+
            const didToken =  await magic.auth.loginWithMagicLink({
             email,
             });
             console.log({didToken});
             if (didToken) {
-              setIsLoading(false);
               router.push('/');
             }
           } catch (error) {
