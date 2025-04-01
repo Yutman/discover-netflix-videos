@@ -42,14 +42,13 @@ const Login = () => {
   const handleLoginWithEmail = async (e) => {
       console.log('Hi Button Clicked'); 
       e.preventDefault(); 
-      
-
+    
        if (email) {
         if (email === 'nimimishiri@gmail.com') {
           try {
           setIsLoading(true);
 
-           const didToken =  await magic.auth.loginWithMagicLink({
+           const didToken = await magic.auth.loginWithMagicLink({
             email,
             });
             console.log({didToken});
@@ -70,7 +69,6 @@ const Login = () => {
       setUserMsg('Please enter a valid email address');
     }
   };
-
 
   return (
   <div className={styles.container}>

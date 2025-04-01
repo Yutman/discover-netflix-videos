@@ -7,8 +7,6 @@ import SectionCards from "../components/card/section-cards";
 
 import {getPopularVideos, getVideos} from '../lib/videos';
 
-
-
 export async function getServerSideProps() {
     const disneyVideos = await getVideos
     ('disneytrailer');
@@ -39,10 +37,7 @@ export default function Home({
       </Head>
 
       <div className={styles.main}>
-
-        <NavBar 
-          username='muchiri@a2z.com'
-          />
+        <NavBar  username='muchiri@a2z.com'/>
        <Banner 
           title='Shawshank Redemption'
           subTitle='Drama'
