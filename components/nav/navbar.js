@@ -16,7 +16,7 @@ const NavBar = () => {
   useEffect(() => {
     const applyUsernameInNav = async () => {
       try {
-        const { email, issuer } = await magic.user.getInfo();
+        const { email } = await magic.user.getInfo();
         const didToken = await magic.user.getInfo();
         if (email) {
           setUsername(email);
@@ -49,20 +49,14 @@ const NavBar = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/logout', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${didToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const res = await response.json();
-    } catch (error) {
-      console.error('Error logging out', error);
-      router.push('/login');
-    }
-  };
+  await magic.user.logout();
+  console.log(await magic.user.isLoggedIn()); // => `false`
+  router.push('/login');
+} catch (error) {
+        console.error('Error logging out', error);
+         router.push('/login');
+      }
+  }
 
   return (
     <div className={styles.container}>
@@ -102,9 +96,12 @@ const NavBar = () => {
             {showDropdown && (
               <div className={styles.navDropdown}>
                 <div>
-                  <a className={styles.linkName} onClick={handleSignout}>
+                  <Link legacyBehavior href='/login' >
+                  <a className={styles.linkName} 
+                  onClick={handleSignout}>
                     Sign out
                   </a>
+                  </Link>
                   <div className={styles.lineWrapper}></div>
                 </div>
               </div>
