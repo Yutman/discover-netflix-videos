@@ -12,7 +12,7 @@ const Video = ()=> {
     <Modal
         isOpen={true}
         contentLabel="Watch the video"
-        onRequestClose={()=> {}}
+        onRequestClose={()=> router.back()}
         overlayClassName={styles.overlay}
       >
       <div>Modal Body</div>
