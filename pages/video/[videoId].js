@@ -4,18 +4,40 @@ import Modal from "react-modal";
 
 import clsx from "classnames";
 
+
 Modal.setAppElement("#__next"); // Set the app element for screen readers
 
-const Video = ()=> {
-    const router = useRouter();
-
-    const video = {
-      title: 'Hi',
+export async function getStaticProps() {
+     const video = {
+      title: 'Shawshank Redemption',
       publishTime: '1994-09-23',
       description: 'A banker convicted of uxoricide forms a friendship over a quarter century with a hardened convict, while maintaining his innocence and trying to remain hopeful through simple compassion',
       channelTitle: 'Warners Brothers',
       viewCount: '10000', 
-    }
+    };
+
+  return {
+    props: {
+      video,
+    },
+    revalidate: 10, // In seconds
+  };
+}
+
+export async function getStaticPaths() {
+  const listOfVideos = ['PLl99DlL6b4', 'WXTNngJsBrI', 
+    'wyEOwHrpZH4'];
+
+  const paths = listOfVideos.map((videoId) => ({
+    params: {videoId},
+  })); 
+ 
+  return { paths, fallback: 'blocking' }
+}
+
+
+const Video = ({video})=> {
+    const router = useRouter();
     
     const {title, publishTime, description, channelTitle, viewCount} = video;
     return (
