@@ -38,7 +38,8 @@ export default function Home({
 
       <div className={styles.main}>
         <NavBar  username='muchiri@a2z.com'/>
-       <Banner 
+       <Banner
+          videoId='4zH5iYM4wJo' 
           title='Shawshank Redemption'
           subTitle='Drama'
           imgUrl='/static/images/shawshank_redemption.jpg'   
