@@ -1,5 +1,6 @@
 import React from 'react'
 import Card from './card';
+import Link from 'next/link';
 import styles from './section-cards.module.css';
 
 const SectionCards = (props) => {
@@ -13,8 +14,15 @@ const SectionCards = (props) => {
     <div className={styles.cardWrapper}>
        {videos.map ((video, idx) => { 
         // eslint-disable-next-line react/jsx-key
-        return <Card  id={idx} imgUrl={video.imgUrl}
-          size={size}/>
+        return ( 
+           <Link href={`/video/${video.id}`} key={video.id}>
+        <Card  
+                  id={idx} 
+                  imgUrl={video.imgUrl}
+                  size={size}
+                  />
+                  </Link>
+        );
        })}
     </div> 
     </section>

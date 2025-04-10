@@ -4,7 +4,7 @@ const Video = ()=> {
     const router = useRouter();
     console.log({router});
     
-    return <div>Video Page</div>
+    return <div>Video Page{router.query.videoId}</div>;
 };
 
 export default Video;
