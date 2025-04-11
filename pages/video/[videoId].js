@@ -3,22 +3,27 @@ import styles from "../../styles/Video.module.css";
 import Modal from "react-modal";
 
 import clsx from "classnames";
+import {getYoutubeVideoById} from "../../lib/videos";
 
 
 Modal.setAppElement("#__next"); // Set the app element for screen readers
 
 export async function getStaticProps() {
-     const video = {
-      title: 'Shawshank Redemption',
-      publishTime: '1994-09-23',
-      description: 'A banker convicted of uxoricide forms a friendship over a quarter century with a hardened convict, while maintaining his innocence and trying to remain hopeful through simple compassion',
-      channelTitle: 'Warners Brothers',
-      viewCount: '10000', 
-    };
+    //  const video = {
+    //   title: 'Shawshank Redemption',
+    //   publishTime: '1994-09-23',
+    //   description: 'A banker convicted of uxoricide forms a friendship over a quarter century with a hardened convict, while maintaining his innocence and trying to remain hopeful through simple compassion',
+    //   channelTitle: 'Warners Brothers',
+    //   viewCount: '10000', 
+    // };
+
+    const videoId = 'PLl99DlL6b4';
+
+    const videoArray = await getYoutubeVideoById(videoId);
 
   return {
     props: {
-      video,
+      video: videoArray.length > 0 ? videoArray[0] : {},
     },
     revalidate: 10, // In seconds
   };
@@ -39,7 +44,14 @@ export async function getStaticPaths() {
 const Video = ({video})=> {
     const router = useRouter();
     
-    const {title, publishTime, description, channelTitle, viewCount} = video;
+    const {
+      title, 
+      publishTime, 
+      description, 
+      channelTitle,
+      statistics : {viewCount},
+    } = video;
+    
     return (
     <div className={styles.container}>
     <Modal
