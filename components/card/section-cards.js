@@ -20,7 +20,7 @@ const SectionCards = (props) => {
                   id={idx} 
                   imgUrl={video.imgUrl}
                   size={size}
-                  />
+                  />              
                   </Link>
         );
        })}

@@ -8,7 +8,7 @@ import {getYoutubeVideoById} from "../../lib/videos";
 
 Modal.setAppElement("#__next"); // Set the app element for screen readers
 
-export async function getStaticProps() {
+export async function getStaticProps(context) {
     //  const video = {
     //   title: 'Shawshank Redemption',
     //   publishTime: '1994-09-23',
@@ -16,8 +16,10 @@ export async function getStaticProps() {
     //   channelTitle: 'Warners Brothers',
     //   viewCount: '10000', 
     // };
+    console.log({context});
+    
 
-    const videoId = 'PLl99DlL6b4';
+    const videoId = context.params.videoId;
 
     const videoArray = await getYoutubeVideoById(videoId);
 
@@ -49,7 +51,7 @@ const Video = ({video})=> {
       publishTime, 
       description, 
       channelTitle,
-      statistics : {viewCount},
+      statistics : {viewCount} = {viewCount: 0},
     } = video;
     
     return (
