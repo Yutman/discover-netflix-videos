@@ -2,6 +2,7 @@ import {useRouter} from "next/router";
 import styles from "../../styles/Video.module.css";
 import Modal from "react-modal";
 
+import NavBar from '../../components/nav/navbar';
 import clsx from "classnames";
 import {getYoutubeVideoById} from "../../lib/videos";
 
@@ -9,16 +10,7 @@ import {getYoutubeVideoById} from "../../lib/videos";
 Modal.setAppElement("#__next"); // Set the app element for screen readers
 
 export async function getStaticProps(context) {
-    //  const video = {
-    //   title: 'Shawshank Redemption',
-    //   publishTime: '1994-09-23',
-    //   description: 'A banker convicted of uxoricide forms a friendship over a quarter century with a hardened convict, while maintaining his innocence and trying to remain hopeful through simple compassion',
-    //   channelTitle: 'Warners Brothers',
-    //   viewCount: '10000', 
-    // };
-    console.log({context});
     
-
     const videoId = context.params.videoId;
 
     const videoArray = await getYoutubeVideoById(videoId);
@@ -56,6 +48,8 @@ const Video = ({video})=> {
     
     return (
     <div className={styles.container}>
+
+    <NavBar />
     <Modal
         isOpen={true}
         contentLabel="Watch the video"
