@@ -30,8 +30,6 @@ export default function Home({
   popularVideos
 }) {
 
-
-  startFetchMyQuery();
   return (
   <div className={styles.container}>
       <Head>
