@@ -34,7 +34,6 @@ const Login = () => {
 
   const handleOnChangeEmail = (e) => {
     setUserMsg('');
-    console.log('event', e);
     const email = e.target.value;
     setEmail(email);
   };
@@ -44,7 +43,7 @@ const Login = () => {
       e.preventDefault(); 
     
        if (email) {
-        if (email === 'nimimishiri@gmail.com') {
+        // if (email === 'nimimishiri@gmail.com') {
           try {
           setIsLoading(true);
 
@@ -53,19 +52,30 @@ const Login = () => {
             });
             console.log({didToken});
             if (didToken) {
-              router.push('/');
+
+              const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${didToken}`,
+                  'Content-Type': 'application/json',
+                },
+              });
+
+              const loggedInResponse = await response.json();
+              if(loggedInResponse.done) {
+                console.log({loggedInResponse});
+                router.push('/');
+              } else {
+                  setIsLoading(false);
+                  setUserMsg('Something went wrong logging in');
+              }
             }
           } catch (error) {
            console.error('Something went wrong logging in', error);
            setIsLoading(false);
-          }
-        } else {
-      //show error message
-      setIsLoading(false);
-      setUserMsg('Something went wrong logging in');
         }
     } else {
-      //show error message
+      setIsLoading(false);
       setUserMsg('Please enter a valid email address');
     }
   };

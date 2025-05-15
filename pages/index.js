@@ -8,6 +8,7 @@ import SectionCards from "../components/card/section-cards";
 import {getPopularVideos, getVideos} from '../lib/videos';
 
 
+
 export async function getServerSideProps() {
     const disneyVideos = await getVideos
     ('disneytrailer');
@@ -20,7 +21,8 @@ export async function getServerSideProps() {
 
      const popularVideos = await getPopularVideos();
 
-    return { props: {disneyVideos, travelVideos, productivityVideos, popularVideos}};
+    return { props: {disneyVideos, travelVideos, productivityVideos, popularVideos},
+  };
 }
 
 export default function Home({
@@ -29,7 +31,7 @@ export default function Home({
   productivityVideos,
   popularVideos
 }) {
-
+ 
   return (
   <div className={styles.container}>
       <Head>
