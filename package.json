@@ -13,6 +13,7 @@
     "classnames": "^2.5.1",
     "cookie": "^1.0.2",
     "framer-motion": "^12.5.0",
+    "jose": "^6.0.11",
     "jsonwebtoken": "^9.0.2",
     "magic-sdk": "^29.0.3",
     "next": "^15.2.4",
