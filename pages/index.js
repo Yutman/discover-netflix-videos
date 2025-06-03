@@ -8,7 +8,6 @@ import SectionCards from "../components/card/section-cards";
 import {getPopularVideos, getVideos} from '../lib/videos';
 
 
-
 export async function getServerSideProps() {
     const disneyVideos = await getVideos
     ('disneytrailer');

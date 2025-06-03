@@ -8,7 +8,7 @@ import {getYoutubeVideoById} from "../../lib/videos";
 
 import Like from '../../components/icons/like-icon';
 import DisLike from '../../components/icons/dislike-icon'; 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 Modal.setAppElement("#__next"); // Set the app element for screen readers
@@ -54,44 +54,59 @@ const Video = ({video})=> {
       statistics : {viewCount} = {viewCount: 0},
     } = video;
 
+     useEffect(() => {
+    const handleLikeDislikeService = async () => {
+      const response = await fetch(`/api/stats?videoId=${videoId}`, {
+        method: "GET",
+      });
+      const data = await response.json();
+
+      if (data.length > 0) {
+        const favourited = data[0].favourited;
+        if (favourited === 1) {
+          setToggleLike(true);
+        } else if (favourited === 0) {
+          setToggleDisLike(true);
+        }
+      }
+    };
+    handleLikeDislikeService();
+  }, [videoId]);
+
+    const runRatingService = async (favourited) => {
+    return await fetch("/api/stats", {
+      method: "POST",
+      body: JSON.stringify({
+        videoId,
+        favourited,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
     const handleToggleLike = async () => {
-        console.log('handleToggleLike');
+    const val = !toggleLike;
+    setToggleLike(val);
+    setToggleDisLike(toggleLike);
 
-        const val = !toggleLike;
-        setToggleLike(val);
-        setToggleDisLike(!toggleDisLike); 
+    const favourited = val ? 1 : 0;
+    const response = await runRatingService(favourited);
+    console.log('data', await response.json());
+    
+  }; 
 
-        const response = await fetch ('/api/stats', {
-          method: 'POST',
-          body: JSON.stringify({
-            videoId,
-            favourited: val ? 1 : 0, // 1 for like, 0 for unlike
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-        console.log("data", await response.json());
-    }
+     const handleToggleDislike = async () => {
+    setToggleDisLike(!toggleDisLike);
+    setToggleLike(toggleDisLike);
 
-    const handleToggleDislike = async() => {
-        console.log('handleToggleDislike');
-        setToggleDisLike(!toggleDisLike);
-      setToggleLike(toggleDisLike); 
-
-      const val = !toggleDisLike;
-      const response = await fetch ('/api/stats', {
-          method: 'POST',
-          body: JSON.stringify({
-            videoId,
-            favourited: val ? 0 : 1, // 0 for dislike, 1 for like
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-        console.log("data", await response.json());
-    }
+    const val = !toggleDisLike;
+    const favourited = val ? 0 : 1;
+    const response = await runRatingService(favourited);
+    console.log('data', await response.json());
+    
+  };
     
     return (
     <div className={styles.container}>

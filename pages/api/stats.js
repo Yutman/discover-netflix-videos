@@ -32,7 +32,7 @@ export default async function stats(req, resp) {
             console.log("Stats updated");
             resp.send({ data: response });
           } else {
-            // inserrt it
+            // insert it
             console.log("Stats inserted");
             const response = await insertStats(token, {
               watched,
