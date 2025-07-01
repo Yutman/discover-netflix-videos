@@ -14,11 +14,22 @@
 .cardWrapper {
   display: flex;
   padding-top: 1.7rem;
-  padding-bottom: 1.7rem; /* Increased to accommodate scaling */
+  padding-bottom: 1.7rem;
   margin-top: 1.5rem;
   margin-right: 0.75rem;
   overflow-x: auto;
-  overflow-y: visible; /* Changed to visible to prevent clipping hover effects */
+  overflow-y: visible;
+  scroll-behavior: smooth; /* Smooth scrolling for JS-triggered scroll */
+  scrollbar-width: thin; /* Firefox: thinner scrollbar */
+}
+
+.cardWrapper::-webkit-scrollbar {
+  height: 8px; /* Chrome/Safari: thinner scrollbar */
+}
+
+.cardWrapper::-webkit-scrollbar-thumb {
+  background-color: var(--gray50);
+  border-radius: 4px;
 }
 
 .wrap {
@@ -40,7 +51,3 @@
     gap: 1.5rem;
   }
 }
-
-
-
-
