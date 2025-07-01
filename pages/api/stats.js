@@ -29,11 +29,9 @@ export default async function stats(req, resp) {
               videoId,
               favourited,
             });
-            console.log("Stats updated");
             resp.send({ data: response });
           } else {
             // insert it
-            console.log("Stats inserted");
             const response = await insertStats(token, {
               watched,
               userId,
@@ -44,10 +42,8 @@ export default async function stats(req, resp) {
           }
         } else {
           if (doesStatsExist) {
-            console.log("Stat already exists");
             resp.send(findVideo);
           } else {
-            console.log("Video not found");
             resp.status(404);
             resp.send({ user: null, msg: "Video not found" });
           }
