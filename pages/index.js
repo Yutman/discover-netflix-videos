@@ -24,7 +24,7 @@ export async function getServerSideProps (context) {
    const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
    
     const disneyVideos = await getVideos
-    ('disneytrailer');
+    ('disney trailer');
 
      const productivityVideos = await getVideos
     ('Productivity');
