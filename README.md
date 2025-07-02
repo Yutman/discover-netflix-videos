@@ -1,40 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Discover Videos
 
-## Getting Started
+Discover Videos is a Netflix-inspired web application built with Next.js, allowing users to browse and search YouTube videos, manage a personalized "My List," and interact with videos via like/dislike features. It uses Magic for passwordless email authentication, Hasura for GraphQL-based data storage, and the YouTube Data API for video content. The app is deployed on Netlify at [https://discover-videos.netlify.app](https://discover-videos.netlify.app).
 
-First, run the development server:
+## Features
+- **Passwordless Authentication**: Sign in using Magic’s email-based magic links.
+- **Video Browsing**: Search and view popular YouTube videos with horizontal scrolling sections.
+- **My List**: Save favorite videos to a user-specific list stored in Hasura.
+- **Like/Dislike**: Interact with videos by liking or disliking them.
+- **Responsive Design**: Optimized for desktop and mobile with hover effects and animations via Framer Motion.
+- **Error Handling**: Fallback images for broken video thumbnails.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
+- **Frontend**: Next.js (^15.2.4), React, CSS Modules, Framer Motion, `classnames` (^2.5.1)
+- **Authentication**: Magic (`magic-sdk` ^28.0.0)
+- **Backend**: Hasura (GraphQL) with PostgreSQL
+- **API**: YouTube Data API v3
+- **Deployment**: Netlify (`@netlify/plugin-nextjs` ^5.0.0)
+- **Other Dependencies**: `jsonwebtoken` (^9.0.0), `cookie` (^0.7.1), `node-fetch` (^2.6.7)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Component Architecture
+- **Navbar**: Contains Netflix logo, "My List" link, and user email dropdown (configurable).
+- **Banner**: Displays a featured video with image, title, subtitle, and clickable button. Uses Google Fonts for styling.
+- **Card**: Renders video cards in three sizes (large, medium, small) with hover effects and overlay. Includes error handling for broken images:
+  ```
+  const Card = (props) => {
+    const { imgUrl = '/static/images/placeholder.jpg', size = 'medium' } = props;
+    const [imgSrc, setImgSrc] = useState(imgUrl);
+    const classMap = { large: styles.lgItem, medium: styles.mdItem, small: styles.smItem };
+    const handleOnError = () => {
+      console.log('Card: Image load error');
+      setImgSrc('/static/images/placeholder.jpg');
+    };
+    return (
+      <motion.div
+        className={cls(styles.imgMotionWrapper, classMap[size])}
+        whileHover={{ scale: 1.2 }}
+      >
+        <img src={imgSrc} onError={handleOnError} alt="Video thumbnail" />
+      </motion.div>
+    );
+  };```
