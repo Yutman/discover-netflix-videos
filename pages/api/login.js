@@ -26,7 +26,9 @@ export default async function login(req, res) {
       );
 
       const isNewUserQuery = await isNewUser(token, metadata.issuer);
-      isNewUserQuery && (await createNewUser(token, metadata));
+      if (isNewUserQuery) {
+        await createNewUser(token, metadata);
+      }
       setTokenCookie(token, res);
       res.send({ done: true });
     } catch (error) {
@@ -34,23 +36,6 @@ export default async function login(req, res) {
       res.status(500).send({ done: false });
     }
   } else {
-    res.send({ done: false });
+    res.status(405).send({ done: false });
   }
 }
-
-
-
-// const isNewUserQuery = await isNewUser(token, metadata.issuer);
-// if (isNewUserQuery) { 
-//   await createNewUser(token, metadata);
-//   setTokenCookie(token, res);
-//   res.send({done: true, });
-// } else {
-//   res.send({done: false});
-// }
-// } catch (error) {
-//   console.error('Something went wrong logging in', error);
-//   res.status(500).send({done:false});
-// }
-// }
-// }

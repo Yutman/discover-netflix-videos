@@ -5,42 +5,46 @@ export async function middleware(request) {
   const token = request.cookies.get('token')?.value;
   const { pathname } = request.nextUrl;
 
-  // Define protected routes (matches config.matcher)
-  const protectedRoutes = ['/', '/browse/my-list'];
 
-  // Check if the current path is a protected route
+  // Allow /login without token
+  if (pathname === '/login') {
+    if (token) {
+      try {
+        await verifyToken(token);
+        return NextResponse.redirect(new URL('/', request.url));
+      } catch {
+        return NextResponse.next();
+      }
+    }
+    return NextResponse.next();
+  }
+
+  // Check protected routes
+  const protectedRoutes = ['/', '/browse/my-list', '/video'];
   const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname === route || pathname.startsWith('/browse/my-list')
+    pathname === route || pathname.startsWith(route)
   );
 
   if (isProtectedRoute) {
     if (!token) {
-      // No token, redirect to login
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
     try {
-      // Verify token
-      const userId = await verifyToken(token);
-      if (!userId) {
-        // Invalid token, remove cookie and redirect to login
-        const response = NextResponse.redirect(new URL('/login', request.url));
-        response.cookies.set('token', '', { maxAge: -1, path: '/' });
-        return response;
-      }
+      await verifyToken(token);
+      return NextResponse.next();
     } catch (error) {
-      console.error('Middleware token verification failed:', error);
-      // Invalid token, remove cookie and redirect to login
+      console.error('Middleware: Token verification failed:', error);
       const response = NextResponse.redirect(new URL('/login', request.url));
       response.cookies.set('token', '', { maxAge: -1, path: '/' });
       return response;
     }
   }
 
-  // Allow request to proceed
+  // Allow non-protected routes
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/', '/browse/:path*'],
+  matcher: ['/', '/browse/:path*', '/video/:path*'],
 };
