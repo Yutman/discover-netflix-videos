@@ -1,8 +1,8 @@
-# Discover Videos
+## Discover Videos
 
 Discover Videos is a Netflix-inspired web application built with Next.js, allowing users to browse and search YouTube videos, manage a personalized "My List," and interact with videos via like/dislike features. It uses Magic for passwordless email authentication, Hasura for GraphQL-based data storage, and the YouTube Data API for video content. The app is deployed on Netlify at [https://discover-videos.netlify.app](https://discover-videos.netlify.app).
 
-## Features
+### Features
 
 - **Passwordless Authentication**: Sign in using Magic’s email-based magic links.
 - **Video Browsing**: Search and view popular YouTube videos with horizontal scrolling sections.
@@ -11,7 +11,7 @@ Discover Videos is a Netflix-inspired web application built with Next.js, allowi
 - **Responsive Design**: Optimized for desktop and mobile with hover effects and animations via Framer Motion.
 - **Error Handling**: Fallback images for broken video thumbnails.
 
-## Tech Stack
+### Tech Stack
 
 - **Frontend**: Next.js (^15.2.4), React, CSS Modules, Framer Motion, `classnames` (^2.5.1)
 - **Authentication**: Magic (`magic-sdk` ^28.0.0)
@@ -20,36 +20,36 @@ Discover Videos is a Netflix-inspired web application built with Next.js, allowi
 - **Deployment**: Netlify (`@netlify/plugin-nextjs` ^5.0.0)
 - **Other Dependencies**: `jsonwebtoken` (^9.0.0), `cookie` (^0.7.1), `node-fetch` (^2.6.7)
 
-## Component Architecture
+### Component Architecture
 
 - **Navbar**: Contains Netflix logo, "My List" link, and user email dropdown (configurable).
 - **Banner**: Displays a featured video with image, title, subtitle, and clickable button. Uses Google Fonts for styling.
 - **Card**: Renders video cards in three sizes (large, medium, small) with hover effects and overlay. Includes error handling for broken images using a fallback to `/static/images/placeholder.jpg`.
 - **Section Cards**: Displays video sections (e.g., "Disney Videos," "Popular") with horizontal scrolling.
 
-## Navigation
+### Navigation
 
 - **Home (`/`)**: Displays featured banner and video sections (e.g., Disney, Popular). Uses SSG for performance.
 - **Login (`/login`)**: Passwordless sign-in with email input and Magic link authentication.
 - **My List (`/browse/my-list`)**: User-specific list of saved videos, fetched via SSR.
 - **Video Page (`/video/[videoId]`)**: Dynamic route for individual videos (e.g., `/video/PLl99DlL6b4`). Uses SSR for user-specific data.
 
-## Data Fetching
+### Data Fetching
 
 - **Static Site Generation (SSG)**: Used for homepage and genre listings for fast, scalable performance.
 - **Server-Side Rendering (SSR)**: Used for user-specific content like "My List" and video pages.
 - **Incremental Static Regeneration (ISR)**: Updates static content (e.g., new movies) with a revalidation interval, balancing freshness and speed.
 
-## Authentication
+### Authentication
 
 - **Magic**: Passwordless authentication via email magic links. Users enter an email, receive a link, and are logged in upon clicking.
 - **Hasura**: Stores user data (email, likes, dislikes) in a PostgreSQL database with GraphQL queries.
 - **JWT**: Tokens are generated in `/api/login` and stored as cookies for session management.
 - **Middleware**: Protects routes like `/` and `/browse/my-list`, redirecting unauthenticated users to `/login`.
 
-## Setup Instructions
+### Setup Instructions
 
-### Prerequisites
+#### Prerequisites
 
 - Node.js (v18 or higher)
 - Netlify CLI (`npm install -g netlify-cli`)
@@ -58,7 +58,7 @@ Discover Videos is a Netflix-inspired web application built with Next.js, allowi
   - [Hasura Cloud](https://cloud.hasura.io) (for GraphQL backend)
   - [Google Cloud](https://console.cloud.google.com) (for YouTube API key)
 
-### Installation
+#### Installation
 
 1. Clone the repository:
    ```bash
@@ -78,7 +78,7 @@ Discover Videos is a Netflix-inspired web application built with Next.js, allowi
     NEXT_PUBLIC_HASURA_ADMIN_SECRET=your_hasura_secret
     YOUTUBE_API_KEY=your_youtube_api_key
    ```
-### Running Locally
+#### Running Locally
 
 1. Start the development server:
    ```bash
@@ -91,7 +91,7 @@ Or, use Netlify CLI:
 2. Open http://localhost:8888 (Netlify CLI) or http://localhost:3000.
 3. Sign in with a valid email to test the Magic link flow.
 
-### Deployment on Netlify
+#### Deployment on Netlify
 1. Ensure netlify.toml is configured
 ```toml
 [build]
@@ -110,7 +110,7 @@ git push origin main
 netlify deploy --prod
 ```
 
-### Magic Configuration
+#### Magic Configuration
 1. In Magic Dashboard:
    - Add to Allowed Origins:
        https://discover-videos.netlify.app
@@ -120,8 +120,8 @@ netlify deploy --prod
        https://discover-videos.netlify.app/api/login
 2. Save changes.
 
-### Next.js Configuration
-####  Image Optimization
+#### Next.js Configuration
+#####  Image Optimization
 ```javascript
 // next.config.js
 const nextConfig = {
@@ -142,7 +142,7 @@ const nextConfig = {
 };
 export default nextConfig;
 ```
-### Project Structure
+#### Project Structure
 ```text
 discover-videos/
 ├── pages/
