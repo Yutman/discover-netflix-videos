@@ -1,6 +1,6 @@
 ## Discover Videos
 
-Discover Videos is a Netflix-inspired web application built with Next.js, allowing users to browse and search YouTube videos, manage a personalized "My List," and interact with videos via like/dislike features. It uses Magic for passwordless email authentication, Hasura for GraphQL-based data storage, and the YouTube Data API for video content. 
+Discover Videos is a Netflix-inspired web application built with Next.js, allowing users to browse YouTube movie trailers, manage a personalized "My List," and interact with videos via like/dislike features. It uses Magic for passwordless email authentication, Hasura for GraphQL-based data storage, and the YouTube Data API for video content. 
 
 ### Features
 
