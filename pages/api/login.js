@@ -1,4 +1,4 @@
-import { magicAdmin } from "../../lib/magic";
+import { getMagicAdmin } from "../../lib/magic";
 import jwt from "jsonwebtoken";
 import { createNewUser, isNewUser } from "../../lib/db/hasura";
 import { setTokenCookie } from "../../lib/cookies";
@@ -9,6 +9,11 @@ export default async function login(req, res) {
       const auth = req.headers.authorization;
       const didToken = auth ? auth.substr(7) : "";
 
+      if (!didToken) {
+        return res.status(401).json({ done: false, error: "Missing DID token" });
+      }
+
+      const magicAdmin = getMagicAdmin();
       const metadata = await magicAdmin.users.getMetadataByToken(didToken);
 
       const token = jwt.sign(
@@ -33,7 +38,10 @@ export default async function login(req, res) {
       res.send({ done: true });
     } catch (error) {
       console.error("Something went wrong logging in", error);
-      res.status(500).send({ done: false });
+      const message =
+        error && typeof error.message === 'string' ? error.message : 'Unknown error';
+      const status = message.includes('MAGIC_SERVER_KEY') ? 500 : 401;
+      res.status(status).send({ done: false, error: message });
     }
   } else {
     res.status(405).send({ done: false });
