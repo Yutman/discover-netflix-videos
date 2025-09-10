@@ -1,4 +1,4 @@
-import { magicAdmin } from "../../lib/magic";
+import { getMagicAdmin } from "../../lib/magic";
 import { removeTokenCookie } from "../../lib/cookies";
 import { verifyToken } from "../../lib/utils";
 
@@ -21,6 +21,7 @@ export default async function logout(req, res) {
     removeTokenCookie(res);
 
     try {
+      const magicAdmin = getMagicAdmin();
       await magicAdmin.users.logoutByIssuer(userId);
     } catch (error) {
       // Log the error but do not send it to the client
