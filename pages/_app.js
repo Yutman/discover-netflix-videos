@@ -10,18 +10,16 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     const handleLoggedIn = async () => {
-      if (router.pathname === "/login") {
-        return;
-      }
       try {
         const isLoggedIn = await magic.user.isLoggedIn();
-        if (isLoggedIn) {
-          if (router.pathname !== "/") {
-            router.push("/");
-          }
-        } else {
-          router.push("/login");
+        // If on login page and already logged in, send to home
+        if (router.pathname === "/login") {
+          if (isLoggedIn) router.push("/");
+          return;
         }
+
+        // On any other page, require login
+        if (!isLoggedIn) router.push("/login");
       } catch (error) {
         console.error('Error checking login status:', error);
         router.push("/login");
