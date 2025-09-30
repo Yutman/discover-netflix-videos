@@ -19,16 +19,20 @@ export default async function login(req, res) {
       // Enhanced Magic Admin initialization with retry logic
       let magicAdmin;
       try {
+        console.log('🔍 Attempting to initialize Magic Admin...');
         magicAdmin = await getMagicAdmin();
+        console.log('✅ Magic Admin initialized successfully');
       } catch (magicError) {
-        console.error("Magic Admin initialization failed:", magicError);
+        console.error("❌ Magic Admin initialization failed:", magicError);
         return res.status(503).json({ 
           done: false, 
           error: "Authentication service is temporarily unavailable. Please try again in a moment." 
         });
       }
 
+      console.log('🔍 Attempting to verify DID token...');
       const metadata = await magicAdmin.users.getMetadataByToken(didToken);
+      console.log('✅ DID token verified successfully:', { issuer: metadata.issuer, email: metadata.email });
 
       const token = jwt.sign(
         {
