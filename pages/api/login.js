@@ -10,10 +10,24 @@ export default async function login(req, res) {
       const didToken = auth ? auth.substr(7) : "";
 
       if (!didToken) {
-        return res.status(401).json({ done: false, error: "Missing DID token" });
+        return res.status(401).json({ 
+          done: false, 
+          error: "Authentication failed. Please try signing in again." 
+        });
       }
 
-      const magicAdmin = getMagicAdmin();
+      // Enhanced Magic Admin initialization with retry logic
+      let magicAdmin;
+      try {
+        magicAdmin = await getMagicAdmin();
+      } catch (magicError) {
+        console.error("Magic Admin initialization failed:", magicError);
+        return res.status(503).json({ 
+          done: false, 
+          error: "Authentication service is temporarily unavailable. Please try again in a moment." 
+        });
+      }
+
       const metadata = await magicAdmin.users.getMetadataByToken(didToken);
 
       const token = jwt.sign(
@@ -37,13 +51,32 @@ export default async function login(req, res) {
       setTokenCookie(token, res);
       res.send({ done: true });
     } catch (error) {
-      console.error("Something went wrong logging in", error);
-      const message =
-        error && typeof error.message === 'string' ? error.message : 'Unknown error';
-      const status = message.includes('MAGIC_SERVER_KEY') ? 500 : 401;
-      res.status(status).send({ done: false, error: message });
+      console.error("Login error:", error);
+      
+      // Provide user-friendly error messages based on error type
+      let userMessage = "Something went wrong during sign in. Please try again.";
+      let statusCode = 500;
+      
+      if (error.message.includes('Authentication service is temporarily unavailable')) {
+        userMessage = "Authentication service is temporarily unavailable. Please try again in a moment.";
+        statusCode = 503;
+      } else if (error.message.includes('X-Magic-API-Key')) {
+        userMessage = "Authentication service is experiencing issues. Please try again.";
+        statusCode = 503;
+      } else if (error.message.includes('JWT_SECRET')) {
+        userMessage = "Server configuration error. Please contact support.";
+        statusCode = 500;
+      }
+      
+      res.status(statusCode).json({ 
+        done: false, 
+        error: userMessage 
+      });
     }
   } else {
-    res.status(405).send({ done: false });
+    res.status(405).json({ 
+      done: false, 
+      error: "Method not allowed" 
+    });
   }
 }

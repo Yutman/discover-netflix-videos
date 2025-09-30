@@ -37,6 +37,15 @@ const Login = () => {
     if (email) {
       try {
         setIsLoading(true);
+        setUserMsg(''); // Clear any previous messages
+        
+        // Check if Magic client is available
+        if (!magic) {
+          setIsLoading(false);
+          setUserMsg('Authentication service is not available. Please refresh the page and try again.');
+          return;
+        }
+        
         const didToken = await magic.auth.loginWithMagicLink({ email });
         if (didToken) {
           const response = await fetch('/api/login', {
@@ -49,17 +58,30 @@ const Login = () => {
           });
 
           const loggedInResponse = await response.json();
+          
           if (loggedInResponse.done) {
             router.push('/');
           } else {
             setIsLoading(false);
-            setUserMsg('Something went wrong logging in');
+            // Display the specific error message from the server
+            setUserMsg(loggedInResponse.error || 'Sign in failed. Please try again.');
           }
+        } else {
+          setIsLoading(false);
+          setUserMsg('Authentication failed. Please try again.');
         }
       } catch (error) {
-        console.error('Something went wrong logging in', error);
+        console.error('Login error:', error);
         setIsLoading(false);
-        setUserMsg('Something went wrong logging in');
+        
+        // Provide specific error messages based on error type
+        if (error.message.includes('Magic Link')) {
+          setUserMsg('Email verification failed. Please check your email and try again.');
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          setUserMsg('Network error. Please check your connection and try again.');
+        } else {
+          setUserMsg('Sign in failed. Please try again.');
+        }
       }
     } else {
       setIsLoading(false);
@@ -101,8 +123,25 @@ const Login = () => {
             className={styles.loginBtn}
             disabled={isLoading}
           >
-            {isLoading ? 'Loading...' : 'Sign In'}
+            {isLoading ? 'Signing In...' : 'Sign In'}
           </button>
+          {userMsg && userMsg.includes('temporarily unavailable') && (
+            <button
+              onClick={() => window.location.reload()}
+              className={styles.retryBtn}
+              style={{ 
+                marginTop: '10px', 
+                padding: '8px 16px', 
+                backgroundColor: 'transparent', 
+                border: '1px solid #fff', 
+                color: '#fff', 
+                cursor: 'pointer',
+                borderRadius: '4px'
+              }}
+            >
+              Refresh Page
+            </button>
+          )}
         </div>
       </main>
     </div>
