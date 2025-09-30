@@ -36,24 +36,9 @@ const Login = () => {
     e.preventDefault();
     if (email) {
       try {
-        console.log('🔍 Login Debug - Starting authentication flow for email:', email);
         setIsLoading(true);
-        
-        console.log('🔍 Magic client instance check:', !!magic);
-        if (!magic) {
-          console.error('❌ Magic client not initialized');
-          setUserMsg('Authentication service not available');
-          setIsLoading(false);
-          return;
-        }
-        
-        console.log('🔍 Attempting Magic Link authentication...');
         const didToken = await magic.auth.loginWithMagicLink({ email });
-        console.log('🔍 DID Token received:', !!didToken);
-        console.log('🔍 DID Token length:', didToken ? didToken.length : 0);
-        
         if (didToken) {
-          console.log('🔍 Sending authentication request to API...');
           const response = await fetch('/api/login', {
             method: 'POST',
             headers: {
@@ -63,25 +48,16 @@ const Login = () => {
             body: JSON.stringify({ email }),
           });
 
-          console.log('🔍 API Response status:', response.status);
           const loggedInResponse = await response.json();
-          console.log('🔍 API Response:', loggedInResponse);
-          
           if (loggedInResponse.done) {
-            console.log('✅ Authentication successful, redirecting...');
             router.push('/');
           } else {
-            console.error('❌ Authentication failed:', loggedInResponse.error);
             setIsLoading(false);
-            setUserMsg(loggedInResponse.error || 'Something went wrong logging in');
+            setUserMsg('Something went wrong logging in');
           }
-        } else {
-          console.error('❌ No DID token received from Magic');
-          setIsLoading(false);
-          setUserMsg('Authentication failed - no token received');
         }
       } catch (error) {
-        console.error('❌ Authentication error:', error);
+        console.error('Something went wrong logging in', error);
         setIsLoading(false);
         setUserMsg('Something went wrong logging in');
       }
