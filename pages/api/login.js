@@ -57,11 +57,18 @@ export default async function login(req, res) {
     } catch (error) {
       console.error("Login error:", error);
       
-      // Provide user-friendly error messages based on error type
+      // Enhanced error detection for API limits and rate limiting
       let userMessage = "Something went wrong during sign in. Please try again.";
       let statusCode = 500;
       
-      if (error.message.includes('Authentication service is temporarily unavailable')) {
+      // Check for specific API limit errors
+      if (error.message.includes('rate limit') || error.message.includes('too many requests')) {
+        userMessage = "Too many sign-in attempts. Please wait a few minutes and try again.";
+        statusCode = 429;
+      } else if (error.message.includes('quota exceeded') || error.message.includes('limit exceeded')) {
+        userMessage = "Service temporarily unavailable due to high demand. Please try again later.";
+        statusCode = 503;
+      } else if (error.message.includes('Authentication service is temporarily unavailable')) {
         userMessage = "Authentication service is temporarily unavailable. Please try again in a moment.";
         statusCode = 503;
       } else if (error.message.includes('X-Magic-API-Key')) {
@@ -70,7 +77,21 @@ export default async function login(req, res) {
       } else if (error.message.includes('JWT_SECRET')) {
         userMessage = "Server configuration error. Please contact support.";
         statusCode = 500;
+      } else if (error.message.includes('timeout') || error.message.includes('ETIMEDOUT')) {
+        userMessage = "Request timed out. Please try again.";
+        statusCode = 504;
+      } else if (error.message.includes('network') || error.message.includes('ECONNREFUSED')) {
+        userMessage = "Network error. Please check your connection and try again.";
+        statusCode = 503;
       }
+      
+      // Log additional details for debugging
+      console.error('Error details:', {
+        message: error.message,
+        code: error.code,
+        status: error.status,
+        response: error.response?.data
+      });
       
       res.status(statusCode).json({ 
         done: false, 
